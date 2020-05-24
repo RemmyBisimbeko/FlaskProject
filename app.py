@@ -41,7 +41,7 @@ class LoanSchema(ma.Schema):
 
 # Init Schema
 loan_schema = LoanSchema()
-# loans_schema = LoansSchema(many=True)
+loans_schema = LoanSchema(many=True)
 
 # Create a Loan
 @app.route('/loan', methods=['POST'])
@@ -60,6 +60,53 @@ def add_loan():
     db.session.commit()
 
     return loan_schema.jsonify(new_loan)
+
+# Get All Loans
+@app.route('/loan', methods=['GET'])
+def get_loans():
+    all_loans = Loan.query.all()
+    result = loans_schema.dump(all_loans)
+    return jsonify(result)
+
+# Get A Single Loan
+@app.route('/loan/<id>', methods=['GET'])
+def get_loan(id):
+    loan = Loan.query.get(id)
+    return loan_schema.jsonify(loan)
+
+# Update a Loan
+@app.route('/loan/<id>', methods=['PUT'])
+def update_loan(id):
+    loan = Loan.query.get(id)
+    
+    name = request.json['name']
+    account = request.json['account']
+    branch = request.json['branch']
+    telephone = request.json['telephone']
+    officer = request.json['officer']
+    email = request.json['email']
+    reason = request.json['reason']
+
+    loan.name = name
+    loan.account = account
+    loan.branch = branch
+    loan.telephone = telephone
+    loan.officer = officer
+    loan.email = email
+    loan.reason = reason
+
+    db.session.commit()
+
+    return loan_schema.jsonify(loan)
+
+# Delete A Single Loan
+@app.route('/loan/<id>', methods=['DELETE'])
+def delete_loan(id):
+    loan = Loan.query.get(id)
+    db.session.delete(loan)
+    db.session.commit()
+    
+    return loan_schema.jsonify(loan)
 
 # Run Server
 if __name__ == '__main__':
