@@ -41,7 +41,7 @@ class LoanSchema(ma.Schema):
 
 # Init Schema
 loan_schema = LoanSchema()
-loans_schema = LoanSchema(many=True)
+# loans_schema = LoansSchema(many=True)
 
 # Create a Loan
 @app.route('/loan', methods=['POST'])
@@ -59,7 +59,7 @@ def add_loan():
     db.session.add(new_loan)
     db.session.commit()
 
-    return loan.jsonify(new_loan)
+    return loan_schema.jsonify(new_loan)
 
 # Run Server
 if __name__ == '__main__':
