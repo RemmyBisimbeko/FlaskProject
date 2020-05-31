@@ -1,12 +1,15 @@
 # FlaskProject
 My first Flask Project
 
-#Instation
-brew install python3
-pip install Flask
+# Instation
+$ brew install python3
+$ pip install Flask
 
-#Initialization
-Flask run
+# Initialization
+$ Flask run
+
+# Rename api_app
+Rename api_app.py to app.py to access Restful API codebase
 
 
 # REST API With Flask & SQL Alchemy
@@ -40,4 +43,8 @@ python app.py
 * PUT     /loan/:id
 * DELETE  /loan/:id
 
+## UI-SQL
+# Install pip
 
+# Install flask
+$ pip install Flask
