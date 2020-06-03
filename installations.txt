@@ -1,0 +1,78 @@
+
+___________________________
+$ conda install -c bioconda mysqlclient
+$ pip install flask-mysqldb
+----------------------
+the easiest way to install mysql I found is to use brew:
+-----
+$ brew install mysql
+$ brew tap homebrew/services
+$ brew services start mysql
+# To restart MySQL
+$ brew services restart mysql 
+------
+in the project folder you do 
+We've installed your MySQL database without a root password. To secure it run:
+$ mysql_secure_installation
+$ mysql -u root -p
+enter your password. that enters mysql.
+
+Then you can do whatever Brad does in the video. Hope that helped someone.
+--------------------------
+1. go to apple icon --> system preferences
+2. open Mysql
+3. n instances you will see "initialize Database"
+4. click on that
+5. you will be asked to set password for root --> set a strong password there
+6. use that password to login in mysql from next time
+Hope this helps.
+
+------------------------
+app.config['MYSQL_USERNAME']='root' should be app.config['MYSQL_USER']='root' . MacOS, 2019.4
+--------------------------
+
+We've installed your MySQL database without a root password. To secure it run:
+    mysql_secure_installation
+
+MySQL is configured to only allow connections from localhost by default
+
+To connect run:
+    mysql -uroot
+
+To have launchd start mysql now and restart at login:
+  brew services start mysql
+Or, if you don't want/need a background service you can just run:
+  mysql.server start
+Remmys-MacBook-Pro:FlaskProject remmy$ mysql_secure_installation
+______________________________
+
+select TRX_DATE,COUNT(*)AS NUMBERS from GEN_CUSTOMER_TRX 
+where datepart(mm,TRX_DATE)=5 and datepart(yyyy,TRX_DATE)=2020 GROUP BY TRX_DATE
+ORDER BY TRX_DATE desc ---missing 1st n 4th
+
+SELECT TRX_DATE,COUNT(*)AS NUMBERS FROM GEN_CUSTOMER_TRX__VER2
+where datepart(mm,TRX_DATE)=5 and datepart(yyyy,TRX_DATE)=2020 GROUP BY TRX_DATE
+ORDER BY TRX_DATE--missing 1st,4th and 30th
+
+SELECT TRN_DATE,COUNT(*)AS NUMBERS FROM GEN_GL_ENTRIES_EXP
+where datepart(mm,TRN_DATE)=5 and datepart(yyyy,TRN_DATE)=2020 GROUP BY TRN_DATE
+ORDER BY TRN_DATE --missing 1st
+
+SELECT TRX_DATE,COUNT(*)AS NUMBERS FROM GEN_TELLER_PROD
+where datepart(mm,TRX_DATE)=5 and datepart(yyyy,TRX_DATE)=2020 GROUP BY TRX_DATE
+ORDER BY TRX_DATE --missing 1st
+
+SELECT BUSINESS_DATE,COUNT(*)AS NUMBERS FROM GEN_CHANNEL
+where datepart(mm,BUSINESS_DATE)=5 and datepart(yyyy,BUSINESS_DATE)=2020 GROUP BY BUSINESS_DATE
+ORDER BY BUSINESS_DATE
+
+SELECT BUSINESS_DATE,COUNT(*)AS NUMBERS FROM GEN_BIG7
+where datepart(mm,BUSINESS_DATE)=5 and datepart(yyyy,BUSINESS_DATE)=2020 GROUP BY BUSINESS_DATE
+ORDER BY BUSINESS_DATE
+
+SELECT BUSINESS_DATE,COUNT(*)AS NUMBERS FROM GEN_DEPOSIT_LISTING
+where datepart(mm,BUSINESS_DATE)=5 and datepart(yyyy,BUSINESS_DATE)=2020 GROUP BY BUSINESS_DATE
+ORDER BY BUSINESS_DATE
+
+SELECT TOP 1000* FROM GEN_BIG7
+__________________
