@@ -1,21 +1,26 @@
-
 ___________________________
-$ conda install -c bioconda mysqlclient
 $ pip install flask-mysqldb
 ----------------------
 the easiest way to install mysql I found is to use brew:
 -----
 $ brew install mysql
 $ brew tap homebrew/services
+To have launchd start mysql now and restart at login:
 $ brew services start mysql
 # To restart MySQL
 $ brew services restart mysql 
+if you don't want/need a background service you can just run:
+$ mysql.server start
 ------
 in the project folder you do 
 We've installed your MySQL database without a root password. To secure it run:
 $ mysql_secure_installation
+To connect run:
+$  mysql -uroot 
+OR
 $ mysql -u root -p
 enter your password. that enters mysql.
+12345etc
 
 Then you can do whatever Brad does in the video. Hope that helped someone.
 --------------------------
@@ -30,22 +35,42 @@ Hope this helps.
 ------------------------
 app.config['MYSQL_USERNAME']='root' should be app.config['MYSQL_USER']='root' . MacOS, 2019.4
 --------------------------
-
-We've installed your MySQL database without a root password. To secure it run:
-    mysql_secure_installation
-
-MySQL is configured to only allow connections from localhost by default
-
-To connect run:
-    mysql -uroot
-
-To have launchd start mysql now and restart at login:
-  brew services start mysql
-Or, if you don't want/need a background service you can just run:
-  mysql.server start
-Remmys-MacBook-Pro:FlaskProject remmy$ mysql_secure_installation
 ______________________________
 
+DATABASE
+#Show Databases
+$SHOW DATABASES
+
+$CREATE DATABASE <DBNAME>
+$USE <DBNAME>
+
+#Create Users Table
+CREATE TABLE users
+(id INT(11) AUTO_INCREMENT PRIMARY KEY, 
+name VARCHAR(100), 
+email VARCHAR(30), 
+username VARCHAR(30), 
+password VARCHAR(100), 
+register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+
+CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(30), username VARCHAR(30), password VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+$ SHOW TABLES;
+DROP TABLES;
+DESCRIBE USERS;
+
+
+________________
+MODULES
+Flask mysql db
+$ pip install flask-mysqldb
+
+
+
+
+
+
+___________________________
 select TRX_DATE,COUNT(*)AS NUMBERS from GEN_CUSTOMER_TRX 
 where datepart(mm,TRX_DATE)=5 and datepart(yyyy,TRX_DATE)=2020 GROUP BY TRX_DATE
 ORDER BY TRX_DATE desc ---missing 1st n 4th
@@ -77,3 +102,229 @@ ORDER BY BUSINESS_DATE
 SELECT TOP 1000* FROM GEN_BIG7
 SELECT TOP 1000* FROM GEN_BIG7
 __________________
+
+SELECT Account_Number FROM ASSET_PORTFOLIO
+WHERE Reporting_Date='2020-05-30' AND PRODUCTID=40551 AND Interest_Rate=0
+
+
+AND Product_Name LIKE '%STAFF%'
+
+
+SELECT DISTINCT ProductID,Product_Name FROM ASSET_PORTFOLIO
+WHERE Reporting_Date='2020-05-30'-- AND Interest_Rate=0
+AND Product_Name LIKE '%STAFF%'
+
+EX
+40559	STAFF EX-STAFF AMORTIZATION
+38232	JLN31 - Staff CENTE Mobile Loans
+__________________
+4c
+__________________
+
+TRUNCATE TABLE [GEN_FINANCE_SCHEDULE_4C]
+GO
+INSERT INTO [GEN_FINANCE_SCHEDULE_4C]
+SELECT
+SECTOR
+,BUSINESS_DATE
+,(SELECT B.UNIT_NAME FROM GEN_BRANCHES B WHERE B.CODE=KK.TRX_UNIT) AS BRANCH
+,(SELECT B.REGION FROM GEN_BRANCH_REGIONS B WHERE B.BRANCH_CODE=KK.TRX_UNIT) AS REGION
+,CURRENCY
+,VOL
+,NUMBERS
+FROM
+(
+SELECT  
+'1. Gross deposits during month' AS SECTOR
+,A.TRX_DATE AS BUSINESS_DATE
+,A.TRX_UNIT
+,A.CURRENCY
+,SUM(A.TOTAL_DEBIT + A.TOTAL_CREDIT) AS VOL
+,SUM(A.TOTAL_NUMBER) AS NUMBERS
+FROM GEN_TELLER_PROD A
+WHERE SUBSTRING(CAST(A.TRX_DATE AS varchar),1,7)='2020-05'
+AND A.JUSTIFICATION_NAME IN ('CASH DEPOSIT FOR SCHOOL FEES','DEPOSIT CASH','DEPOSIT CASH UNFUNDED ACCOUNTS','INITIAL TERM
+DEPOSIT CASH')
+GROUP BY A.TRX_DATE,A.TRX_UNIT,A.CURRENCY
+UNION
+ SELECT  
+'3. Gross withrawals during the month' AS SECTOR
+,A.TRX_DATE AS BUSINESS_DATE
+,A.TRX_UNIT
+,A.CURRENCY
+,SUM(A.TOTAL_DEBIT + A.TOTAL_CREDIT) AS VOL
+,SUM(A.TOTAL_NUMBER) AS NUMBERS
+FROM GEN_TELLER_PROD A
+WHERE SUBSTRING(CAST(A.TRX_DATE AS varchar),1,7)='2020-05'
+AND A.JUSTIFICATION_NAME IN ('CASH WITHDRAW-CHEQUE ONLY','CASH WITHDRAWAL','CASH WITHDRAWAL-ATM OFF')
+GROUP BY A.TRX_DATE,A.TRX_UNIT,A.CURRENCY
+UNION
+SELECT  
+'2. o/w ATM deposits' AS SECTOR
+,A.TRX_DATE AS BUSINESS_DATE
+,A.TRX_UNIT
+,A.CURRENCY
+,SUM(A.TOTAL_DEBIT + A.TOTAL_CREDIT) AS VOL
+,SUM(A.TOTAL_NUMBER) AS NUMBERS
+FROM GEN_TELLER_PROD A
+WHERE SUBSTRING(CAST(A.TRX_DATE AS varchar),1,7)='2020-05'
+AND A.JUSTIFICATION_NAME IN ('DEPOSIT CASH')
+AND A.TRX_USER  IN ('KS2146','AZ1843','NJ1569','NP3901','NR1275','NJ3614','NR3361','TA2299','ZN4014')
+GROUP BY A.TRX_DATE,A.TRX_UNIT,A.CURRENCY
+) AS KK
+UNION
+SELECT
+SECTOR
+,BUSINESS_DATE
+,BRANCH
+,REGION
+,CURRENCY
+,VOL
+,NUMBERS
+FROM
+(
+SELECT
+'4. o/w ATM withdrawals' AS SECTOR
+	  ,A.BUSINESS_DATE
+	  ,[REGION]
+,[BRANCH] 
+	  ,'UGX' AS CURRENCY     
+	   ,SUM(A.VOLUME) AS VOL
+,SUM(A.NUMBERS) AS NUMBERS
+FROM GEN_CHANNEL A
+WHERE CHANNEL='ATM'
+AND SUBSTRING(CAST(A.BUSINESS_DATE AS varchar),1,7)='2020-05'
+AND A.SERVICES IN ('OLDD_CARDWithdrawal','VISA_CARDWithdrawal','Withdrawal')
+GROUP BY A.BUSINESS_DATE,[REGION],[BRANCH]  
+UNION
+SELECT
+'2. o/w ATM deposits' AS SECTOR
+	  ,A.BUSINESS_DATE
+	  ,[REGION]
+,[BRANCH] 
+	  ,'UGX' AS CURRENCY     
+	   ,SUM(A.VOLUME) AS VOL
+,SUM(A.NUMBERS) AS NUMBERS
+FROM GEN_CHANNEL A
+WHERE CHANNEL='ATM'
+AND SUBSTRING(CAST(A.BUSINESS_DATE AS varchar),1,7)='2020-05'
+AND A.SERVICES IN ('OLDD_CARDDeposit','VISA_CARDDeposit')
+GROUP BY A.BUSINESS_DATE,[REGION],[BRANCH]  
+) AS KKK
+                                                     
+------------------
+--SELECT TOP 3* FROM GEN_TELLER_PROD
+--SELECT TOP 3* FROM GEN_CHANNEL
+
+select * from [GEN_FINANCE_SCHEDULE_4C]
+where BUSINESS_DATE between @FROM_DATE AND @END_DATE
+and SECTOR in (@SECTOR)
+AND CURRENCY='UGX'
+
+select * from [GEN_FINANCE_SCHEDULE_4C]
+where BUSINESS_DATE between @FROM_DATE AND @END_DATE
+and SECTOR in (@SECTOR)
+AND CURRENCY<>'UGX'
+
+select distinct(sector) as sector from [GEN_FINANCE_SCHEDULE_4C]
+________________
+
+
+--ken dashboard
+INSERT INTO [BI_DWH].[dbo].[DASH_DEP]
+([EOM_DATE]
+      ,[EOM_MONTH]
+      ,[MonthName]
+      ,[Actual_No]
+      ,[Actual_Vol]
+      ,[Budget_Vol])
+	  VALUES
+
+SELECT
+KK.EOM_MONTH,
+KK.EOM_DATE,
+KK.Nox AS Actual_No,
+KK.Volx AS Actual_Vol,
+c.VALUE AS Budget_Vol
+FROM(
+select 
+b.[EOM_MONTH],
+b.[EOM_DATE],
+count(a.[ACCOUNT_NUMBER]) as Nox,
+sum(a.[FIN_ACCOUNT_BALANCE]) AS Volx
+FROM [CENTENARY_EDW].[dbo].[GEN_DEPOSIT_LISTING] a,[BI_DWH].[dbo].[PARAMS_DATES] b
+where a.BUSINESS_DATE=b.[EOM_DATE]
+AND substring(CAST(a.PRODUCT_ID AS varchar),1,2) <> '38'
+AND a.STATUS NOT IN ('CLOSED','CLOSED BY CUSTOMER','DELETED')
+GROUP BY b.[EOM_MONTH],b.[EOM_DATE]
+--ORDER BY b.[EOM_MONTH]
+) AS KK,[BI_DWH].[dbo].[PARAMS_BUDGET] c
+WHERE KK.EOM_MONTH=c.EOM_MONTH
+AND RTRIM(LTRIM(c.[DESCRIPTION])) IN ('DEP_VOL')
+
+----------
+hnw laons disbursed
+
+SELECT 
+ISNULL((SELECT B.REGION FROM [CENTENARY_EDW].[dbo].[GEN_BRANCH_REGIONS] B WHERE B.BRANCH_CODE=A.BranchID),0) AS REGION,
+A.AssetTypeID,
+A.CustomerID,
+A.Account_Name,
+A.Account_Number,
+A.Branch_Name,
+A.BranchID,
+A.DISBURSEMENT_DATE,
+A.DISBURSEMENT_AMOUNT_BASE,
+A.CURRENCYID,
+A.PRINCIPAL_BALANCE_BASE,
+A.Sector_Description,
+A.MediatorName,
+A.Relationship_Officer_Name 
+FROM BI_DWH.DBO.ASSET_PORTFOLIO A
+--WHERE REPORTING_DATE=(SELECT MAX(REPORT_DATE) FROM GEN_LOAN_LISTINGS_VER2_11)
+WHERE A.CustomerID IN (SELECT CUST_ID FROM GEN_CUSTOMER_SEGMENTS
+WHERE SEGMENT='High Net Worth')
+and a.AssetTypeID<>'CENTE'
+AND A.Disbursement_Date BETWEEN '2020-03-01' AND '2020-05-30'
+AND ISNULL((SELECT B.REGION FROM [CENTENARY_EDW].[dbo].[GEN_BRANCH_REGIONS] B WHERE B.BRANCH_CODE=A.BranchID),0) IN (@REGION)
+AND A.Branch_Name IN (@BRANCH)
+
+-----------------------
+
+KK
+INSERT INTO [BI_DWH].[dbo].[DASH_DEP]
+([EOM_DATE]
+      ,[EOM_MONTH]
+      ,[MonthName]
+      ,[Actual_No]
+      ,[Actual_Vol]
+      ,[Budget_Vol])
+	  VALUES
+
+(SELECT
+KK.EOM_MONTH,
+KK.EOM_DATE,
+DATENAME(month,KK.EOM_DATE),
+KK.Nox AS Actual_No,
+KK.Volx AS Actual_Vol,
+c.VALUE AS Budget_Vol
+FROM(
+select 
+b.[EOM_MONTH],
+b.[EOM_DATE],
+count(a.[ACCOUNT_NUMBER]) as Nox,
+sum(a.[FIN_ACCOUNT_BALANCE]) AS Volx
+FROM [CENTENARY_EDW].[dbo].[GEN_DEPOSIT_LISTING] a,[BI_DWH].[dbo].[PARAMS_DATES] b
+where a.BUSINESS_DATE=b.[EOM_DATE]
+AND substring(CAST(a.PRODUCT_ID AS varchar),1,2) <> '38'
+AND a.STATUS NOT IN ('CLOSED','CLOSED BY CUSTOMER','DELETED')
+GROUP BY b.[EOM_MONTH],b.[EOM_DATE]
+--ORDER BY b.[EOM_MONTH]
+) AS KK,[BI_DWH].[dbo].[PARAMS_BUDGET] c
+WHERE KK.EOM_MONTH=c.EOM_MONTH
+AND RTRIM(LTRIM(c.[DESCRIPTION])) IN ('DEP_VOL')
+
+)
+
+
+---

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Restructure
+    Applicaition
 {% endblock %}
 
 {% block body %}
@@ -12,9 +12,9 @@
 </div>
 
 <ul class="list-group">
-    {% for restructure in restructures %}
+    {% for application in applications %}
         <li class="list-group-item">
-            <a href="/restructure/{{restructure.id}}">{{ restructure.name}} - {{ restructure.account }}</a>
+            <a href="/restructure/{{application.id}}">{{ application.name}} - {{ application.account }}</a>
         </li>
     {% endfor %}
 </ul>

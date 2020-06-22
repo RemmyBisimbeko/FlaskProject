@@ -1,20 +1,19 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Restructure
+    Applications
 {% endblock %}
 
 {% block body %}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-3">{{id}}</h1>     
+        <h1 class="display-3">Loan Applications</h1>     
     </div>
 </div>
-
 <ul class="list-group">
-    {% for restructure in restructures %}
+    {% for application in applications %}
         <li class="list-group-item">
-            <a href="/restructure/{{restructure.id}}">{{ restructure.name}} - {{ restructure.account }}</a>
+            <a href="/application/{{application.id}}">{{ application.name}} - {{ application.account }}</a>
         </li>
     {% endfor %}
 </ul>
