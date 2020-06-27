@@ -61,9 +61,23 @@ DESCRIBE USERS;
 
 
 ________________
+Install mysql client
+$ brew install mysql-client
+OR
+$ pip install mysqlclient 
+OR 
+$ pipenv install mysqlclient
+
+
 MODULES
 Flask mysql db
 $ pip install flask-mysqldb
+
+WTForms for Form Validatoin
+$ pip install Flask-WTF
+
+PassLib for Hasjing Passwords
+$ pip install passlib
 
 
 
@@ -328,3 +342,11 @@ AND RTRIM(LTRIM(c.[DESCRIPTION])) IN ('DEP_VOL')
 
 
 ---
+
+select * from GEN_HR_STAFF_1
+--select * from GEN_LOAN_LISTINGS_WRTOFF_VER2_AUTO
+--select * from GEN_LOAN_LISTINGS_VER2_AUTO 
+--select * from GEN_LOANS_DISBURSED_AUTO
+--select * from GEN_OVERDRAFTS_LISTING_AUTO
+--select * from GEN_LOAN_LISTINGS_VER2_11
+-----------
