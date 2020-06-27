@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">Register</h1>
+        <p class="lead">
+            Loan Restructure in an app built by Strategy and Research. 
+            It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
+            at a reduced cost in this covid times.
+        </p>        
+    </div>
+</div>
+
+<div class="container">
+    <form method="POST", action="">
+        <div class="form-group">
+            {{render_field(form.name, class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.email, class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.username, class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.password, class_="form-control")}}
+        </div>
+        <div class="form-group">
+            {{render_field(form.confirm, class_="form-control")}}
+        </div>
+        <p><input type="submit" class="btn btn-primary" value="Submit"></p>
+    </form>     
+</div>
+{% endblock %}

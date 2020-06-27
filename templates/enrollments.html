@@ -1,19 +1,19 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Applications
+    Enrollments
 {% endblock %}
 
 {% block body %}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <h1 class="display-3">Loan Applications</h1>     
+        <h1 class="display-3">Card Enrollments</h1>     
     </div>
 </div>
 <ul class="list-group">
-    {% for application in applications %}
+    {% for enrollment in enrollments %}
         <li class="list-group-item">
-            <a href="/application/{{application.id}}">{{ application.name}} - {{ application.account }}</a>
+            <a href="/enrollment/{{enrollment.id}}">{{ enrollment.name}} - {{ enrollment.account }}</a>
         </li>
     {% endfor %}
 </ul>
