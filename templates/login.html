@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">Login</h1>
+        <p class="lead">
+            Loan Restructure in an app built by Strategy and Research. 
+            It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
+            at a reduced cost in this covid times.
+        </p>        
+    </div>
+</div>
+
+<div class="container">
+    <form action="" method="POST">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" value={{request.form.username}}>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" value={{request.form.password}}>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

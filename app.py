@@ -76,6 +76,38 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
+# User Login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # Check method
+    if request.method == 'POST':
+        # If form is submited, GET username and password from the form
+        # GET form fields, no need for using wtf forms
+        username = request.form['username']
+        # Candidate-user input, bse we want to compare with password which is in the db
+        passsword_candidate = request.form['password']
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute Query, GET user by username
+        result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
+
+        # Check result, >0 - any rows found
+        if result > 0:
+            # Get Stored hash
+            data = cur.fetchone()
+            # Get password from that fetch
+            password = data['password']
+
+            # Compare the passwords
+            if sha256_crypt.verify(passsword_candidate, password):
+                app.logger.info('PASSWORD MATCHED')
+        else:
+            app.logger.info('NO USER FOUND')
+
+    return render_template('login.html')
+
 # Restructures Route
 @app.route('/restructures')
 def restructures():
