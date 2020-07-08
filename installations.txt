@@ -350,3 +350,82 @@ select * from GEN_HR_STAFF_1
 --select * from GEN_OVERDRAFTS_LISTING_AUTO
 --select * from GEN_LOAN_LISTINGS_VER2_11
 -----------
+
+
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP 1000 
+
+ISNULL((SELECT B.REGION FROM [CENTENARY_EDW].[dbo].[GEN_BRANCH_REGIONS] B WHERE B.BRANCH_CODE=C.UNIT_CODE),0) AS REGION
+,ISNULL((SELECT E.UNIT_NAME FROM [CENTENARY_EDW].[dbo].[GEN_BRANCHES] E WHERE E.CODE=C.UNIT_CODE),0) AS BRANCH
+      ,C.[UNIT_CODE]
+      ,C.[CUST_ID]
+      ,DATEDIFF(day, C.[DATE_OF_BIRTH], GETDATE())/365.25 as AGE
+      ,C.[CUST_TYPE]
+      ,C.[RESIDENCE]
+      ,C.[CUST_STATUS]
+      ,C.[SEX]
+      ,C.[TITLE]
+      ,C.[FIRST_NAME]
+      ,C.[SURNAME]
+      ,C.[E_MAIL]
+      ,C.[E_MAIL2]
+      ,C.[TELEPHONE_1]
+      ,C.[MOBILE_TEL]
+      ,C.[MOBILE_TEL2]
+      ,C.[SPOUSE_NAME]
+      ,C.[EMPLOYER]
+      ,C.[EMPLOYER_ADDRESS]
+	  ,D.SECTOR
+  FROM 
+  [CENTENARY_EDW].[dbo].[GEN_CUSTOMER_VER2] C, 
+  GEN_DEPOSIT_LISTING_AUTO D
+  WHERE C.CUST_ID = D.CUSTOMER_CODE
+  --AND D.SECTOR IN  ('
+
+
+  
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT 
+
+ISNULL((SELECT B.REGION FROM [CENTENARY_EDW].[dbo].[GEN_BRANCH_REGIONS] B WHERE B.BRANCH_CODE=C.UNIT_CODE),0) AS REGION
+,ISNULL((SELECT E.UNIT_NAME FROM [CENTENARY_EDW].[dbo].[GEN_BRANCHES] E WHERE E.CODE=C.UNIT_CODE),0) AS BRANCH
+      ,C.[UNIT_CODE]
+      ,C.[CUST_ID]
+      ,C.[DATE_OF_BIRTH]
+      ,C.[CUST_TYPE]
+      ,C.[RESIDENCE]
+      ,C.[CUST_STATUS]
+      ,C.[SEX]
+      ,C.[TITLE]
+      ,C.[FIRST_NAME]
+      ,C.[SURNAME]
+      ,C.[E_MAIL]
+      ,C.[E_MAIL2]
+      ,C.[TELEPHONE_1]
+      ,C.[MOBILE_TEL]
+      ,C.[MOBILE_TEL2]
+      ,C.[SPOUSE_NAME]
+      ,C.[EMPLOYER]
+      ,C.[EMPLOYER_ADDRESS]
+	  ,D.SEGMENT
+  FROM 
+  [CENTENARY_EDW].[dbo].[GEN_CUSTOMER_VER2] C, 
+  GEN_DEPOSIT_LISTING_AUTO D
+  WHERE C.CUST_ID = D.CUSTOMER_CODE
+  AND D.SEGMENT IN  ('High Net Worth','Corporate','SME')
+  AND C.UNIT_CODE IN (37,29,69,30,11,38,82,20,10,31,50,76)
+
+
+select  distinct(segment) from GEN_DEPOSIT_LISTING_AUTO
+segment
+Corporate
+High Net Worth
+N/A
+Retail
+SME
+
+select * from GEN_BRANCHES
+
+
+
+  
