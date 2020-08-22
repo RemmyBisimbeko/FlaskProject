@@ -13,6 +13,12 @@
         <a class="nav-link" href="/about">About</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="/crosssell">Cross Sell</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/hrissues">HR Issues</a>
+      </li>
+      <!-- <li class="nav-item">
         <a class="nav-link" href="/restructures">Restructures</a>
       </li>
       <li class="nav-item">
@@ -20,13 +26,26 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/enrollments">Enrollments</a>
-      </li>
+      </li> -->
     </ul>
 
     <ul class="navbar-nav justify-content-end">
-      <li class="nav-item">
-        <a class="nav-link" href="/register">Register</a>
-      </li>
+      <!-- Test for the session -->
+      {% if session.logged_in %}
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/register">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+      {% endif %}
     </ul>
   </div>
 </nav>
