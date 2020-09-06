@@ -7,18 +7,25 @@
 {% block body %}
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
-        <!-- <h1 class="display-3">About Loan Restructure</h1>
-        <p class="lead">
-            Loan Restructure in an app built by Strategy and Research. 
-            It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
-            at a reduced cost in this covid times.
-        </p>         -->
-        <h1 class="display-3">Cross Sell</h1>
-        <p class="lead">
-            Cross Sell is an app built by Innovation Committee. 
-            It is an answer to the bank's initiative to enable staff to easily cross sell bank 
-            products and engage HR on Staff wellfare issues.
-        </p>
+        <h1 class="display-3">{{crosssell.product}}</h1> 
+        <small>Created by {{crosssell.name}} - {{crosssell.pf_number}} on {{crosssell.submission_date}}</small>  
+        <p></p>
+        <h4>Customer Account - {{crosssell.customer_account}}</h4>
+        <h5>Cross Sell Type - {{crosssell.crosssell_type}}</h5>
+        <h5>Branch - {{crosssell.branch}}</h5>
+
+        <div>
+            {{crosssell.naration | safe }}
+        </div>
+
     </div>
 </div>
+
+<ul class="list-group">
+    {% for crosssell in crosssells %}
+        <li class="list-group-item">
+            <a href="/crosssell/{{crosssell.id}}">{{ crosssell.name}} - {{ crosssell.account }}</a>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock %}

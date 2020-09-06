@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+  <h1>Add HR Issues</h1>
+  {% from "includes/_formhelpers.html" import render_field %}
+  <form method="POST" action="">
+    <div class="form-group">
+        {{ render_field(form.pf_number, class_="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ render_field(form.branch, class_="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ render_field(form.topic, class_="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ render_field(form.issue_type, class_="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ render_field(form.hrissue, class_="form-control", id="editor") }}
+    </div>
+    <p><input class="btn btn-primary" type="submit" value="Submit">
+  </form>
+</div>
+{% endblock %}
+
+

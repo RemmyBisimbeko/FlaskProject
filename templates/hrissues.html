@@ -15,8 +15,17 @@
         </p>         -->
         <h1 class="display-3">HR Issues</h1>
         <p class="lead">
-            Engage HR on all Staff wellfare issues.
+            Engage HR on all Staff Welfare issues.
         </p>
     </div>
 </div>
+
+<ul class="list-group">
+    {% for hrissue in hrissues %}
+        <li class="list-group-item">
+            <a href="/hrissue/{{hrissue.id}}">{{ hrissue.name}} - {{ hrissue.pf_number }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
 {% endblock %}

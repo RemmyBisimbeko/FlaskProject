@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Dashboard
+    Cross Sell
 {% endblock %}
 
 {% block body %}
@@ -13,8 +13,7 @@
             It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
             at a reduced cost in this covid times.
         </p>         -->
-        <h1 class="display-3">Cross Sell Dashboard</h1>
-        <small>Welcome, {{session.username}}</small>
+        <h1 class="display-3">Cross Sell</h1>
         <p class="lead">
             Cross Sell is an app built by Innovation Committee. 
             It is an answer to the bank's initiative to enable staff to easily cross sell bank 
@@ -23,12 +22,12 @@
     </div>
 </div>
 
-<div class="row">
+<ul class="list-group">
+    {% for crosssell in crosssells %}
+        <li class="list-group-item">
+            <a href="/crosssell/{{crosssell.id}}">{{ crosssell.name}} - {{ crosssell.customer_account }}</a>
+        </li>
+    {% endfor %}
+</ul>
 
-    {% extends 'dashboard_crosssells.html' %}
-    {% extends 'dashboard_hrissues.html' %}
-
-</div>
-
-</div>
 {% endblock %}

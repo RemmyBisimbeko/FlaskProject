@@ -53,8 +53,28 @@ username VARCHAR(30),
 password VARCHAR(100), 
 register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
+--Users Table
+CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(50), username VARCHAR(30), password VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+--Enrollments Table
+CREATE TABLE enrollments(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), account VARCHAR(50), branch VARCHAR(30), telephone VARCHAR(30), email VARCHAR(50), officer VARCHAR(50), reason VARCHAR(255), submission_date DATE);
+--Cross Sell Table
+CREATE TABLE crosssells(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), pf_number VARCHAR(6), branch VARCHAR(30), customer_account VARCHAR(50), product VARCHAR(30),crosssell_type VARCHAR(30), naration VARCHAR(255), submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+--Applications Table
+CREATE TABLE applications(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), account VARCHAR(50), branch VARCHAR(30), telephone VARCHAR(30), email VARCHAR(50), officer VARCHAR(50), reason VARCHAR(255), submission_date DATE);
+--hrissues
+CREATE TABLE hrissues(id INT(11) AUTO_INCREMENT PRIMARY KEY, issue_type VARCHAR(50), name VARCHAR(50), pf_number VARCHAR(6), branch VARCHAR(30), topic VARCHAR(30), hrissue VARCHAR(255), submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+--restructures Table
+CREATE TABLE restructures(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), account VARCHAR(50), branch VARCHAR(30), telephone VARCHAR(30), email VARCHAR(50), officer VARCHAR(50), reason VARCHAR(255), submission_date DATE);
 
-CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(30), username VARCHAR(30), password VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+--insert into crosssells
+"INSERT INTO crosssells(pf_number, branch, customer_account, product, crosssell_type, naration, submission_date, name)
+VALUES(%s, %s, %s, %s, %s, %s, %s, %s)", (pf_number, branch, customer_account, product, crosssell_type, naration, submission_date, session['username'])
+
+--insert into hrissues
+"INSERT INTO hrissues(pf_number, branch, topic, issue_type, hrissue, name)
+VALUES(%s, %s, %s, %s, %s, %s)", (pf_number, branch, topic, issue_type, hrissue, submission_date, session['username'])
+
+--
 $ SHOW TABLES;
 DROP TABLES;
 DESCRIBE USERS;

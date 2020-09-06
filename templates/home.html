@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block body %}
-<div class="jumbotron jumbotron-fluid">
+<div class="jumbotron jumbotron-fluid text-center">
     <div class="container">
         <!-- <h1 class="display-3">Loan Restructure</h1>
         <p class="lead">Welcome to my Loan Restructure app. This application was build with python, bootstrap and sql</p>
         <p> -->
         <h1 class="display-3">Cross Sell</h1>
         <p class="lead">Welcome to the Cente Cross Sell Dashboard.</p>
+        {% if session.logged_in == NULL %}
         <p>
+            <a class="btn btn-primary btn-lg" href="/register" role="button">Register</a>
             <a class="btn btn-success btn-lg" href="/login" role="button">Login</a>
-            <a class="btn btn-primary btn-lg" href="/register" role="button">Sign up</a>
         </p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

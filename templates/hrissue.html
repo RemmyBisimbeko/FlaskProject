@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Dashboard
+    HR Issues
 {% endblock %}
 
 {% block body %}
@@ -13,22 +13,10 @@
             It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
             at a reduced cost in this covid times.
         </p>         -->
-        <h1 class="display-3">Cross Sell Dashboard</h1>
-        <small>Welcome, {{session.username}}</small>
+        <h1 class="display-3">HR Issues</h1>
         <p class="lead">
-            Cross Sell is an app built by Innovation Committee. 
-            It is an answer to the bank's initiative to enable staff to easily cross sell bank 
-            products and engage HR on Staff Welfare issues.
+            Engage HR on all Staff Welfare issues.
         </p>
     </div>
-</div>
-
-<div class="row">
-
-    {% extends 'dashboard_crosssells.html' %}
-    {% extends 'dashboard_hrissues.html' %}
-
-</div>
-
 </div>
 {% endblock %}
