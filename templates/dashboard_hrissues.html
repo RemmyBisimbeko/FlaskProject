@@ -1,25 +1,25 @@
 
 <div class="col-sm-6">
-        <a class="btn btn-success" href="/add_hrissue">Add HR Issue</a>
-        <p></p>
-        <table class="table table-striped">
-            <tr>
-                <th>ID</th>
-                <th>Created By</th>
-                <th>Topic</th>
-                <th>Creation Date</th>
-                <th></th>
-                <th></th>
-            </tr>
-            {% for hrissue in hrissues %}
-            <tr>
-                <td>{{hrissue.id}}</td>
-                <td>{{hrissue.name}}</td>
-                <td>{{hrissue.topic}}</td>
-                <td>{{hrissue.submission_date}}</td>
-                <td><a href="edit_hrissue/{{hrissue.id}}" class="btn btn-info" pull-right>Edit</a></td>
-                <td><a href="#" class="btn btn-danger">Delete</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+    <a class="btn btn-success" href="/add_hrissue">Add HR Issue</a>
+    <p></p>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Created By</th>
+            <th>Topic</th>
+            <th>Creation Date</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for hrissue in hrissues %}
+        <tr>
+            <td>{{hrissue.id}}</td>
+            <td>{{hrissue.name}}</td>
+            <td>{{hrissue.topic}}</td>
+            <td>{{hrissue.submission_date}}</td>
+            <td><a href="edit_hrissue/{{hrissue.id}}" class="btn btn-info" pull-right>Edit</a></td>
+            <td><a href="#" class="btn btn-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

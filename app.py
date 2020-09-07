@@ -203,55 +203,49 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
-# Cross Sells Dashboard Route
-@app.route('/dashboard_crosssells')
+# Dashboard Route
+@app.route('/dashboard')
 @is_logged_in
-def dashboard_crosssells():
+def dashboard():
     # Create  Cursor
     cur = mysql.connection.cursor()
 
-    # Get Cross Sells and HR Issues
+    # Get Cross Sells 
     result = cur.execute("SELECT * FROM crosssells")
 
     # Set Cross Sell Variable and set it to all in Dictionary form
-    crosssells=cur.fetchall()
+    crosssells = cur.fetchall()
 
     if result > 0:
-        return render_template('dashboard_crosssells.html', crosssells=crosssells)
+        return render_template('dashboard.html', crosssells=crosssells)
     else:
-        msg = 'No Cross Sells or HR issues Yet'
-        return render_template('dashboard_crosssells.html', msg=msg)
+        msg = 'No Cross Sells Yet'
+        return render_template('dashboard.html', msg)
 
     # Close Connection
     cur.close()
 
-# HR Issues Dashboard Route
+# Dashboard Route
 @app.route('/dashboard_hrissues')
 @is_logged_in
 def dashboard_hrissues():
     # Create  Cursor
     cur = mysql.connection.cursor()
 
-    # Get Cross Sells and HR Issues
-    result = cur.execute("SELECT * FROM crosssells")
+    # Get Cross Sells 
+    result = cur.execute("SELECT * FROM hrissues")
 
     # Set Cross Sell Variable and set it to all in Dictionary form
-    hrissues=cur.fetchall()
+    hrissues = cur.fetchall()
 
     if result > 0:
         return render_template('dashboard_hrissues.html', hrissues=hrissues)
     else:
-        msg = 'No Cross Sells or HR issues Yet'
-        return render_template('dashboard_hrissues.html', msg=msg)
+        msg = 'No HR Issues Yet'
+        return render_template('dashboard_hrissues.html', msg)
 
     # Close Connection
     cur.close()
-
-# Dashboard Route
-@app.route('/dashboard')
-@is_logged_in
-def dashboard():
-    return render_template('dashboard.html')
 
 # Add Cross Sell Form Class
 class CrosssellForm(Form):
