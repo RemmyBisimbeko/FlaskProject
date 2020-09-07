@@ -79,6 +79,7 @@ $ SHOW TABLES;
 DROP TABLES;
 DESCRIBE USERS;
 
+Table + App
 
 ________________
 Install mysql client

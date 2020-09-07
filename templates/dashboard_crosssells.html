@@ -1,5 +1,11 @@
+{% extends 'layout.html' %}
 
-<div class="col-sm-6">
+{% block title %}
+    Cross Sells Dashboard
+{% endblock %}
+
+{% block body %}
+<div>
     <a class="btn btn-success" href="/add_crosssell">Add Cross Sell</a>
     <p></p>
     <table class="table table-striped">
@@ -29,3 +35,4 @@
         {% endfor %}
     </table>
 </div>
+{% endblock %}

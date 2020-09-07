@@ -32,9 +32,21 @@
     <ul class="navbar-nav justify-content-end">
       <!-- Test for the session -->
       {% if session.logged_in %}
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="/dashboard">Dashboard</a>
-        </li>
+        </li> -->
+
+        <div class="dropdown">
+          <button class="btn btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dashboard
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/dashboard">Main Dashboard</a>
+            <a class="dropdown-item" href="/dashboard_crosssells">Cross Sell Dashboard</a>
+            <a class="dropdown-item" href="/dashboard_hrissues">HR Issues Dashboard</a>
+          </div>
+        </div>
+
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
@@ -49,3 +61,4 @@
     </ul>
   </div>
 </nav>
+

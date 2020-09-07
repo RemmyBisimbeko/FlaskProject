@@ -13,10 +13,26 @@
             It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
             at a reduced cost in this covid times.
         </p>         -->
-        <h1 class="display-3">HR Issues</h1>
-        <p class="lead">
-            Engage HR on all Staff Welfare issues.
-        </p>
+
+
+        <h1 class="display-3">{{hrissue.topic}}</h1> 
+        <small>Created by {{hrissue.name}} - {{hrissue.pf_number}} on {{hrissue.submission_date}}</small>  
+        <p></p>
+        <h5>HR Issues Type - {{hrissue.issue_type}}</h5>
+        <h5>Branch - {{hrissue.branch}}</h5>
+
+        <div>
+            {{hrissue.issue | safe }}
+        </div>
+
     </div>
 </div>
+
+<ul class="list-group">
+    {% for hrissue in hrissues %}
+        <li class="list-group-item">
+            <a href="/hrissue/{{hrissue.id}}">{{ hrissue.name}} - {{ hrissue.pf_number }}</a>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock %}

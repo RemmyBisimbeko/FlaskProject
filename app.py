@@ -71,6 +71,20 @@ def crosssell(id):
 
     return render_template('crosssell.html', crosssell=crosssell)
 
+# Single HR Issue Route
+@app.route('/hrissue/<string:id>')
+def hrissue(id):
+    # Create  Cursor
+    cur = mysql.connection.cursor()
+
+    # Get HR Issue
+    result = cur.execute("SELECT * FROM hrissues WHERE id=%s", [id ])
+
+    # Set HR Issues Variable and set it to all in Dictionary form
+    hrissue = cur.fetchone()
+
+    return render_template('hrissue.html', hrissue=hrissue)
+
 # HR Issues Route
 @app.route('/hrissues')
 def hrissues():
@@ -203,10 +217,10 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
-# Dashboard Route
-@app.route('/dashboard')
+# Cross Sell Dashboard Route
+@app.route('/dashboard_crosssells')
 @is_logged_in
-def dashboard():
+def dashboard_crosssells():
     # Create  Cursor
     cur = mysql.connection.cursor()
 
@@ -217,15 +231,15 @@ def dashboard():
     crosssells = cur.fetchall()
 
     if result > 0:
-        return render_template('dashboard.html', crosssells=crosssells)
+        return render_template('dashboard_crosssells.html', crosssells=crosssells)
     else:
         msg = 'No Cross Sells Yet'
-        return render_template('dashboard.html', msg)
+        return render_template('dashboard_crosssells.html', msg=msg)
 
     # Close Connection
     cur.close()
 
-# Dashboard Route
+# HR Issues Dashboard Route
 @app.route('/dashboard_hrissues')
 @is_logged_in
 def dashboard_hrissues():
@@ -242,10 +256,16 @@ def dashboard_hrissues():
         return render_template('dashboard_hrissues.html', hrissues=hrissues)
     else:
         msg = 'No HR Issues Yet'
-        return render_template('dashboard_hrissues.html', msg)
+        return render_template('dashboard_hrissues.html', msg=msg)
 
     # Close Connection
     cur.close()
+
+# Dashboard Route
+@app.route('/dashboard')
+@is_logged_in
+def dashboard():
+    return render_template('dashboard.html')
 
 # Add Cross Sell Form Class
 class CrosssellForm(Form):
@@ -304,7 +324,7 @@ class HrissueForm(Form):
     branch = StringField('branch', [validators.Length(min=1, max=50)])
     topic = StringField('topic', [validators.Length(min=1, max=20)])
     issue_type = StringField('issue_type', [validators.Length(min=1, max=20)])
-    hrissue = TextAreaField('naration', [validators.Length(min=10)])
+    hrissue = TextAreaField('hrissue', [validators.Length(min=10)])
 
 # Add HR Issue Route  
 @app.route('/add_hrissue', methods=['GET', 'POST'])

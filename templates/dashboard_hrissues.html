@@ -1,5 +1,11 @@
+{% extends 'layout.html' %}
 
-<div class="col-sm-6">
+{% block title %}
+    HR Issues Dashboard
+{% endblock %}
+
+{% block body %}
+<div>
     <a class="btn btn-success" href="/add_hrissue">Add HR Issue</a>
     <p></p>
     <table class="table table-striped">
@@ -23,3 +29,4 @@
         {% endfor %}
     </table>
 </div>
+{% endblock %}
