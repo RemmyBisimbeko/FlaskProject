@@ -15,6 +15,8 @@ from functools import wraps
 
 # Init App
 app = Flask(__name__)
+app.secret_key = 'secret123'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 # Config MySQL
 app.config['MYSQL_HOST'] = os.environ.get("MYSQL_HOST")
@@ -392,8 +394,8 @@ def enrollment(id):
 if __name__ == '__main__':
     # app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
     # app.config["SECRET_KEY"] = 'secret123'
-    app.secret_key = 'secret123'
-    app.config['SESSION_TYPE'] = 'filesystem'
+    # app.secret_key = 'secret123'
+    # app.config['SESSION_TYPE'] = 'filesystem'
 
     sess.init_app(app)
     
