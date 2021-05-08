@@ -27,13 +27,13 @@
 <div class="container">
     <form method="POST", action="">
         <div class="form-group">
-            {{render_field(form.name, class_="form-control")}}
+            {{render_field(form.name, class_="form-control", placeholder='Firstname Lastname')}}
         </div>
         <div class="form-group">
-            {{render_field(form.email, class_="form-control")}}
+            {{render_field(form.email, class_="form-control", placeholder='firstname.lastname@centenarybank.co.ug')}}
         </div>
         <div class="form-group">
-            {{render_field(form.username, class_="form-control")}}
+            {{render_field(form.username, class_="form-control", placeholder='firstname.lastname')}}
         </div>
         <div class="form-group">
             {{render_field(form.password, class_="form-control")}}
