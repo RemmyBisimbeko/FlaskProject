@@ -390,7 +390,8 @@ def enrollment(id):
 
 # Run Server
 if __name__ == '__main__':
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+    # app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+    app.config["SECRET_KEY"] = 'secret123'
     app.config['SESSION_TYPE'] = 'filesystem'
 
     sess.init_app(app)
