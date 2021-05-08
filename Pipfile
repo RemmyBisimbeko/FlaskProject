@@ -13,6 +13,8 @@ marshmallow-sqlalchemy = "*"
 mysqlclient = "*"
 gunicorn = "*"
 flask-mysqldb = "*"
+wtforms = "*"
+flask-passlib = "*"
 
 [requires]
 python_version = "3.6"
