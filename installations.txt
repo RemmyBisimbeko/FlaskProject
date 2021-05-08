@@ -100,6 +100,9 @@ PassLib for Hasjing Passwords
 $ pip install passlib
 
 
+mysql://ba0f988603553d:d04581fa@us-cdbr-east-03.cleardb.com/heroku_e0a2a7447beb862?reconnect=true
+
+
 
 
 

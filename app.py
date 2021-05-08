@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 # from RestructuresData import Restructures
 # from ApplicationsData import Applications
@@ -16,11 +17,11 @@ from functools import wraps
 app = Flask(__name__)
 
 # Config MySQL
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '12345etc'
-app.config['MYSQL_DB'] = 'flaskproject'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['MYSQL_HOST'] = os.environ.get("MYSQL_HOST")
+app.config['MYSQL_USER'] = os.environ.get("MYSQL_USER")
+app.config['MYSQL_PASSWORD'] = os.environ.get("MYSQL_PASSWORD")
+app.config['MYSQL_DB'] = os.environ.get("MYSQL_DB")
+app.config['MYSQL_CURSORCLASS'] = os.environ.get("MYSQL_CURSORCLASS")
 # Init MySQL
 mysql = MySQL(app)
 
