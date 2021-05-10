@@ -16,7 +16,7 @@
 
 
         <h1 class="display-3">{{hrissue.topic}}</h1> 
-        <small>Created by {{hrissue.name}} - {{hrissue.pf_number}} on {{hrissue.submission_date}}</small>  
+        <small>Created by {{hrissue.name.replace(".", " ").title()}} - {{hrissue.pf_number}} on {{hrissue.submission_date}}</small>  
         <p></p>
         <h5>HR Issues Type - {{hrissue.issue_type}}</h5>
         <h5>Branch - {{hrissue.branch}}</h5>

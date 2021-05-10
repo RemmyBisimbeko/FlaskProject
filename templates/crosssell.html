@@ -8,7 +8,7 @@
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-3">{{crosssell.product}}</h1> 
-        <small>Created by {{crosssell.name}} - {{crosssell.pf_number}} on {{crosssell.submission_date}}</small>  
+        <small>Created by {{crosssell.name.replace(".", " ").title()}} - {{crosssell.pf_number}} on {{crosssell.submission_date}}</small>  
         <p></p>
         <h4>Customer Account - {{crosssell.customer_account}}</h4>
         <h5>Cross Sell Type - {{crosssell.crosssell_type}}</h5>
