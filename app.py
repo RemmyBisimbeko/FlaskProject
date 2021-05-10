@@ -317,9 +317,62 @@ def add_crosssell():
 
         flash('Your cross sell was made successfully', 'success')
 
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard_crosssells'))
 
     return render_template('add_crosssell.html', form=form)
+
+# Edit Crosssell Route  
+@app.route('/edit_crosssell/<string:id>', methods=['GET', 'POST'])
+@is_logged_in
+def edit_crosssell(id):
+
+    # Create Cursor
+    cur = mysql.connection.cursor()
+
+    # Get Cross sell by id
+    result = cur.execute("SELECT * FROM crosssells WHERE id = %s", [id])
+
+    crosssell = cur.fetchone()
+
+    # Get Form
+    form = CrosssellForm(request.form)
+
+    # Populate Cross sell form fields
+    form.pf_number.data = crosssell['pf_number']
+    form.branch.data = crosssell['branch']
+    form.customer_account.data = crosssell['customer_account']
+    form.product.data = crosssell['product']
+    form.crosssell_type.data = crosssell['crosssell_type']
+    form.naration.data = crosssell['naration']
+
+    if request.method == 'POST' and form.validate():
+        pf_number = request.form['pf_number']
+        branch = request.form['branch']
+        customer_account = request.form['customer_account']
+        product = request.form['product']
+        crosssell_type = request.form['crosssell_type']
+        naration = request.form['naration']
+        # submission_date = '2020-08-31 23:38:49'
+        # name = session['username']
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute 
+        cur.execute("UPDATE crosssells SET pf_number=%s, branch=%s, customer_account=%s, product=%s, crosssell_type=%s, naration=%s WHERE id=%s", (pf_number, branch, customer_account, product, crosssell_type, naration, id))
+
+        # Commit to DB
+        mysql.connection.commit()
+
+        # Close Connection
+        cur.close()
+
+        flash('Your cross sell was updated successfully', 'success')
+
+        return redirect(url_for('dashboard_crosssells'))
+
+    return render_template('edit_crosssell.html', form=form)
+
 
 # Add HR Issue Form Class
 class HrissueForm(Form):
@@ -356,9 +409,60 @@ def add_hrissue():
 
         flash('Your HR issue was made successfully', 'success')
 
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard_hrissues'))
 
     return render_template('add_hrissue.html', form=form)
+
+# Edit HRissue Route  
+@app.route('/edit_hrissue/<string:id>', methods=['GET', 'POST'])
+@is_logged_in
+def edit_hrissue(id):
+
+    # Create Cursor
+    cur = mysql.connection.cursor()
+
+    # Get Cross sell by id
+    result = cur.execute("SELECT * FROM hrissues WHERE id = %s", [id])
+
+    hrissue = cur.fetchone()
+
+    # Get Form
+    form = HrissueForm(request.form)
+
+    # Populate HR Issue form fields
+    form.pf_number.data = hrissue['pf_number']
+    form.branch.data = hrissue['branch']
+    form.topic.data = hrissue['topic']
+    form.issue_type.data = hrissue['issue_type']
+    form.hrissue.data = hrissue['hrissue']
+
+    if request.method == 'POST' and form.validate():
+        pf_number = request.form['pf_number']
+        branch = request.form['branch']
+        topic = request.form['topic']
+        issue_type = request.form['issue_type']
+        hrissue = request.form['hrissue']
+        # submission_date = '2020-08-31 23:38:49'
+        # name = session['username']
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute 
+        cur.execute("UPDATE hrissues SET pf_number=%s, branch=%s, topic=%s, issue_type=%s, hrissue=%s WHERE id=%s", (pf_number, branch, topic, issue_type, hrissue, id))
+
+        # Commit to DB
+        mysql.connection.commit()
+
+        # Close Connection
+        cur.close()
+
+        flash('Your HR issue was updated successfully', 'success')
+
+        return redirect(url_for('dashboard_hrissues'))
+
+    return render_template('edit_hrissue.html', form=form)
+
 
 # Restructures Route
 @app.route('/restructures')
@@ -392,11 +496,5 @@ def enrollment(id):
 
 # Run Server
 if __name__ == '__main__':
-    # app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-    # app.config["SECRET_KEY"] = 'secret123'
-    # app.secret_key = 'secret123'
-    # app.config['SESSION_TYPE'] = 'filesystem'
-
-    sess.init_app(app)
     
     app.run(debug=True)
