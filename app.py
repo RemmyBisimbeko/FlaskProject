@@ -373,6 +373,25 @@ def edit_crosssell(id):
 
     return render_template('edit_crosssell.html', form=form)
 
+# Delete Cross Sell
+@app.route('/delete_crosssell/<string:id>', methods=['POST'])
+@is_logged_in 
+def delete_crosssell(id):
+    # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute 
+        cur.execute("DELETE FROM crosssells WHERE id=%s", [id])
+
+        # Commit to DB
+        mysql.connection.commit()
+
+        # Close Connection
+        cur.close()
+
+        flash('Your cross sell was deleted successfully', 'success')
+
+        return redirect(url_for('dashboard_crosssells'))
 
 # Add HR Issue Form Class
 class HrissueForm(Form):
@@ -462,6 +481,27 @@ def edit_hrissue(id):
         return redirect(url_for('dashboard_hrissues'))
 
     return render_template('edit_hrissue.html', form=form)
+
+# Delete HR Issue
+@app.route('/delete_hrissue/<string:id>', methods=['POST'])
+@is_logged_in 
+def delete_hrissue(id):
+    # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute 
+        cur.execute("DELETE FROM hrissues WHERE id=%s", [id])
+
+        # Commit to DB
+        mysql.connection.commit()
+
+        # Close Connection
+        cur.close()
+
+        flash('Your HR Issue was deleted successfully', 'success')
+
+        return redirect(url_for('dashboard_hrissues'))
+
 
 
 # Restructures Route
