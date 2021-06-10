@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from wtforms.fields.core import SelectField
 # from RestructuresData import Restructures
 # from ApplicationsData import Applications
 # from EnrollmentsData import Enrollments
@@ -332,9 +333,115 @@ def dashboard():
 # Add Reactivation Form Class
 class ReactivationForm(Form):
     pf_number = StringField('pf_number', [validators.Length(min=1, max=6)])
-    branch = StringField('branch', [validators.Length(min=1, max=50)])
+    branch = SelectField('branch', choices=[('--Select Branch/Unit--','--Select Branch/Unit--'),
+        ('Adjumani','Adjumani'),
+        ('Apac','Apac'),
+        ('Arua','Arua'),
+        ('Audit','Audit'),
+        ('Bugiri','Bugiri'),
+        ('Bundibugyo','Bundibugyo'),
+        ('Busia','Busia'),
+        ('Business Development','Business Development'),
+        ('Business Technology','Business Technology'),
+        ('Bwaise','Bwaise'),
+        ('Bwera','Bwera'),
+        ('Bweyale','Bweyale'),
+        ('Centralized Back Office','Centralized Back Office'),
+        ('Commercial Banking','Commercial Banking'),
+        ('Commercial Credit','Commercial Credit'),
+        ('Compliance','Compliance'),
+        ('Core Banking System','Core Banking System'),
+        ('Corporate Communications And Marketing','Corporate Communications And Marketing'),
+        ('Corporate Services','Corporate Services'),
+        ('Credit Management','Credit Management'),
+        ('Directors','Directors'),
+        ('E-Banking','E-Banking'),
+        ('Ebanking','Ebanking'),
+        ('Entebbe Road Corporate','Entebbe Road Corporate'),
+        ('Entebbe Road Standard','Entebbe Road Standard'),
+        ('Executive Office','Executive Office'),
+        ('Finance','Finance'),
+        ('Financial Inclusion','Financial Inclusion'),
+        ('Financial Markets','Financial Markets'),
+        ('Fort Portal','Fort Portal'),
+        ('Gulu','Gulu'),
+        ('Gulu Market','Gulu Market'),
+        ('Head Office','Head Office'),
+        ('Hoima','Hoima'),
+        ('Human Resource','Human Resource'),
+        ('Ibanda','Ibanda'),
+        ('Iganga','Iganga'),
+        ('International','International'),
+        ('Ishaka','Ishaka'),
+        ('Isingiro','Isingiro'),
+        ('Jinja','Jinja'),
+        ('Kabalagala','Kabalagala'),
+        ('Kabale','Kabale'),
+        ('Kagadi','Kagadi'),
+        ('Kampala Cash Centre','Kampala Cash Centre'),
+        ('Kamuli','Kamuli'),
+        ('Kamwenge','Kamwenge'),
+        ('Kanungu','Kanungu'),
+        ('Kapchorwa','Kapchorwa'),
+        ('Kasese','Kasese'),
+        ('Kawempe','Kawempe'),
+        ('Kawuku','Kawuku'),
+        ('Kayabwe','Kayabwe'),
+        ('Kayunga','Kayunga'),
+        ('Kiboga','Kiboga'),
+        ('Kikuubo','Kikuubo'),
+        ('Kikuubo B','Kikuubo B'),
+        ('Kireka','Kireka'),
+        ('Kisoro','Kisoro'),
+        ('Kitgum','Kitgum'),
+        ('Koboko','Koboko'),
+        ('Kotido','Kotido'),
+        ('Kumi Service','Kumi Service'),
+        ('Kyenjojo','Kyenjojo'),
+        ('Kyotera','Kyotera'),
+        ('Legal','Legal'),
+        ('Lira','Lira'),
+        ('Lugogo','Lugogo'),
+        ('Lyantonde','Lyantonde'),
+        ('Makerere','Makerere'),
+        ('Mapeera','Mapeera'),
+        ('Mapeera Platinum','Mapeera Platinum'),
+        ('Masaka','Masaka'),
+        ('Masindi','Masindi'),
+        ('Mbale','Mbale'),
+        ('Mbarara','Mbarara'),
+        ('Mbarara Corporate','Mbarara Corporate'),
+        ('Mityana','Mityana'),
+        ('Mobile','Mobile'),
+        ('Moroto','Moroto'),
+        ('Mpigi','Mpigi'),
+        ('Mubende','Mubende'),
+        ('Mukono','Mukono'),
+        ('Najjanankumbi','Najjanankumbi'),
+        ('Nakivubo Road','Nakivubo Road'),
+        ('Namirembe Road','Namirembe Road'),
+        ('Nansana','Nansana'),
+        ('Natete','Natete'),
+        ('Nebbi','Nebbi'),
+        ('Ntinda','Ntinda'),
+        ('Ntungamo','Ntungamo'),
+        ('Operations','Operations'),
+        ('Paidha','Paidha'),
+        ('Pallisa','Pallisa'),
+        ('Retail And Microfinance','Retail And Microfinance'),
+        ('Risk','Risk'),
+        ('Rubaga','Rubaga'),
+        ('Rukungiri','Rukungiri'),
+        ('Security','Security'),
+        ('Sembabule','Sembabule'),
+        ('Soroti','Soroti'),
+        ('Strategy And Research','Strategy And Research'),
+        ('Tororo','Tororo'),
+        ('Wakiso','Wakiso'),
+        ('Wobulenzi','Wobulenzi')
+    ])
     customer_account = StringField('customer_account', [validators.Length(min=1, max=20)])
-    product = StringField('product', [validators.Length(min=1, max=20)])
+    product = SelectField('product', choices=[('--Select Product--','--Select Product--'),('Savings Account','Savings Account'),('Current Account','Current Account'),('Centemobile','Centemobile'),('Internet Banking','Internet Banking'),('Agency Banking','Agency Banking'),('Visa Card','Visa Card'),('Prepaid Card','Prepaid Card')])
     # crosssell_type = StringField('crosssell_type', [validators.Length(min=1, max=20)])
     naration = TextAreaField('naration', [validators.Length(min=10)])
     # submission_date = StringField('submission_date', [validators.Length(min=1, max=20)])
@@ -388,7 +495,7 @@ def edit_reactivation(id):
     # Create Cursor
     cur = mysql.connection.cursor()
 
-    # Get Cross sell by id
+    # Get Reactivation by id
     result = cur.execute("SELECT * FROM reactivations WHERE id = %s", [id])
 
     reactivation = cur.fetchone()
@@ -397,19 +504,17 @@ def edit_reactivation(id):
     form = ReactivationForm(request.form)
 
     # Populate Cross sell form fields
-    form.pf_number.data = crosssell['pf_number']
-    form.branch.data = crosssell['branch']
-    form.customer_account.data = crosssell['customer_account']
-    form.product.data = crosssell['product']
-    # form.crosssell_type.data = crosssell['crosssell_type']
-    form.naration.data = crosssell['naration']
+    form.pf_number.data = reactivation['pf_number']
+    form.branch.data = reactivation['branch']
+    form.customer_account.data = reactivation['customer_account']
+    form.product.data = reactivation['product']
+    form.naration.data = reactivation['naration']
 
     if request.method == 'POST' and form.validate():
         pf_number = request.form['pf_number']
         branch = request.form['branch']
         customer_account = request.form['customer_account']
         product = request.form['product']
-        # crosssell_type = request.form['crosssell_type']
         naration = request.form['naration']
         # submission_date = '2020-08-31 23:38:49'
         # name = session['username']
@@ -418,7 +523,7 @@ def edit_reactivation(id):
         cur = mysql.connection.cursor()
 
         # Execute 
-        cur.execute("UPDATE reactivation SET pf_number=%s, branch=%s, customer_account=%s, product=%s, naration=%s WHERE id=%s", (pf_number, branch, customer_account, product, naration, id))
+        cur.execute("UPDATE reactivations SET pf_number=%s, branch=%s, customer_account=%s, product=%s, naration=%s WHERE id=%s", (pf_number, branch, customer_account, product, naration, id))
 
         # Commit to DB
         mysql.connection.commit()
@@ -456,10 +561,116 @@ def delete_reactivation(id):
 # Add Cross Sell Form Class
 class CrosssellForm(Form):
     pf_number = StringField('pf_number', [validators.Length(min=1, max=6)])
-    branch = StringField('branch', [validators.Length(min=1, max=50)])
+    branch = SelectField('branch', choices=[('--Select Branch/Unit--','--Select Branch/Unit--'),
+        ('Adjumani','Adjumani'),
+        ('Apac','Apac'),
+        ('Arua','Arua'),
+        ('Audit','Audit'),
+        ('Bugiri','Bugiri'),
+        ('Bundibugyo','Bundibugyo'),
+        ('Busia','Busia'),
+        ('Business Development','Business Development'),
+        ('Business Technology','Business Technology'),
+        ('Bwaise','Bwaise'),
+        ('Bwera','Bwera'),
+        ('Bweyale','Bweyale'),
+        ('Centralized Back Office','Centralized Back Office'),
+        ('Commercial Banking','Commercial Banking'),
+        ('Commercial Credit','Commercial Credit'),
+        ('Compliance','Compliance'),
+        ('Core Banking System','Core Banking System'),
+        ('Corporate Communications And Marketing','Corporate Communications And Marketing'),
+        ('Corporate Services','Corporate Services'),
+        ('Credit Management','Credit Management'),
+        ('Directors','Directors'),
+        ('E-Banking','E-Banking'),
+        ('Ebanking','Ebanking'),
+        ('Entebbe Road Corporate','Entebbe Road Corporate'),
+        ('Entebbe Road Standard','Entebbe Road Standard'),
+        ('Executive Office','Executive Office'),
+        ('Finance','Finance'),
+        ('Financial Inclusion','Financial Inclusion'),
+        ('Financial Markets','Financial Markets'),
+        ('Fort Portal','Fort Portal'),
+        ('Gulu','Gulu'),
+        ('Gulu Market','Gulu Market'),
+        ('Head Office','Head Office'),
+        ('Hoima','Hoima'),
+        ('Human Resource','Human Resource'),
+        ('Ibanda','Ibanda'),
+        ('Iganga','Iganga'),
+        ('International','International'),
+        ('Ishaka','Ishaka'),
+        ('Isingiro','Isingiro'),
+        ('Jinja','Jinja'),
+        ('Kabalagala','Kabalagala'),
+        ('Kabale','Kabale'),
+        ('Kagadi','Kagadi'),
+        ('Kampala Cash Centre','Kampala Cash Centre'),
+        ('Kamuli','Kamuli'),
+        ('Kamwenge','Kamwenge'),
+        ('Kanungu','Kanungu'),
+        ('Kapchorwa','Kapchorwa'),
+        ('Kasese','Kasese'),
+        ('Kawempe','Kawempe'),
+        ('Kawuku','Kawuku'),
+        ('Kayabwe','Kayabwe'),
+        ('Kayunga','Kayunga'),
+        ('Kiboga','Kiboga'),
+        ('Kikuubo','Kikuubo'),
+        ('Kikuubo B','Kikuubo B'),
+        ('Kireka','Kireka'),
+        ('Kisoro','Kisoro'),
+        ('Kitgum','Kitgum'),
+        ('Koboko','Koboko'),
+        ('Kotido','Kotido'),
+        ('Kumi Service','Kumi Service'),
+        ('Kyenjojo','Kyenjojo'),
+        ('Kyotera','Kyotera'),
+        ('Legal','Legal'),
+        ('Lira','Lira'),
+        ('Lugogo','Lugogo'),
+        ('Lyantonde','Lyantonde'),
+        ('Makerere','Makerere'),
+        ('Mapeera','Mapeera'),
+        ('Mapeera Platinum','Mapeera Platinum'),
+        ('Masaka','Masaka'),
+        ('Masindi','Masindi'),
+        ('Mbale','Mbale'),
+        ('Mbarara','Mbarara'),
+        ('Mbarara Corporate','Mbarara Corporate'),
+        ('Mityana','Mityana'),
+        ('Mobile','Mobile'),
+        ('Moroto','Moroto'),
+        ('Mpigi','Mpigi'),
+        ('Mubende','Mubende'),
+        ('Mukono','Mukono'),
+        ('Najjanankumbi','Najjanankumbi'),
+        ('Nakivubo Road','Nakivubo Road'),
+        ('Namirembe Road','Namirembe Road'),
+        ('Nansana','Nansana'),
+        ('Natete','Natete'),
+        ('Nebbi','Nebbi'),
+        ('Ntinda','Ntinda'),
+        ('Ntungamo','Ntungamo'),
+        ('Operations','Operations'),
+        ('Paidha','Paidha'),
+        ('Pallisa','Pallisa'),
+        ('Retail And Microfinance','Retail And Microfinance'),
+        ('Risk','Risk'),
+        ('Rubaga','Rubaga'),
+        ('Rukungiri','Rukungiri'),
+        ('Security','Security'),
+        ('Sembabule','Sembabule'),
+        ('Soroti','Soroti'),
+        ('Strategy And Research','Strategy And Research'),
+        ('Tororo','Tororo'),
+        ('Wakiso','Wakiso'),
+        ('Wobulenzi','Wobulenzi')
+    ])
     customer_account = StringField('customer_account', [validators.Length(min=1, max=20)])
-    product = StringField('product', [validators.Length(min=1, max=20)])
-    crosssell_type = StringField('crosssell_type', [validators.Length(min=1, max=20)])
+    product = SelectField('product', choices=[('--Select Product--','--Select Product--'),('Savings Account','Savings Account'),('Current Account','Current Account'),('Centemobile','Centemobile'),('Internet Banking','Internet Banking'),('Agency Banking','Agency Banking'),('Visa Card','Visa Card'),('Prepaid Card','Prepaid Card')])
+    crosssell_type = SelectField('crosssell_type', choices=[('--Select Crossell Type--','--Select Crossell Type--'),('Enrollment','Enrollment'),('Usage','Usage'),('Reactivation','Reactivation')])
     naration = TextAreaField('naration', [validators.Length(min=10)])
     # submission_date = StringField('submission_date', [validators.Length(min=1, max=20)])
 
@@ -579,9 +790,115 @@ def delete_crosssell(id):
 # Add HR Issue Form Class
 class HrissueForm(Form):
     pf_number = StringField('pf_number', [validators.Length(min=1, max=6)])
-    branch = StringField('branch', [validators.Length(min=1, max=50)])
+    branch = SelectField('branch', choices=[('--Select Branch/Unit--','--Select Branch/Unit--'),
+        ('Adjumani','Adjumani'),
+        ('Apac','Apac'),
+        ('Arua','Arua'),
+        ('Audit','Audit'),
+        ('Bugiri','Bugiri'),
+        ('Bundibugyo','Bundibugyo'),
+        ('Busia','Busia'),
+        ('Business Development','Business Development'),
+        ('Business Technology','Business Technology'),
+        ('Bwaise','Bwaise'),
+        ('Bwera','Bwera'),
+        ('Bweyale','Bweyale'),
+        ('Centralized Back Office','Centralized Back Office'),
+        ('Commercial Banking','Commercial Banking'),
+        ('Commercial Credit','Commercial Credit'),
+        ('Compliance','Compliance'),
+        ('Core Banking System','Core Banking System'),
+        ('Corporate Communications And Marketing','Corporate Communications And Marketing'),
+        ('Corporate Services','Corporate Services'),
+        ('Credit Management','Credit Management'),
+        ('Directors','Directors'),
+        ('E-Banking','E-Banking'),
+        ('Ebanking','Ebanking'),
+        ('Entebbe Road Corporate','Entebbe Road Corporate'),
+        ('Entebbe Road Standard','Entebbe Road Standard'),
+        ('Executive Office','Executive Office'),
+        ('Finance','Finance'),
+        ('Financial Inclusion','Financial Inclusion'),
+        ('Financial Markets','Financial Markets'),
+        ('Fort Portal','Fort Portal'),
+        ('Gulu','Gulu'),
+        ('Gulu Market','Gulu Market'),
+        ('Head Office','Head Office'),
+        ('Hoima','Hoima'),
+        ('Human Resource','Human Resource'),
+        ('Ibanda','Ibanda'),
+        ('Iganga','Iganga'),
+        ('International','International'),
+        ('Ishaka','Ishaka'),
+        ('Isingiro','Isingiro'),
+        ('Jinja','Jinja'),
+        ('Kabalagala','Kabalagala'),
+        ('Kabale','Kabale'),
+        ('Kagadi','Kagadi'),
+        ('Kampala Cash Centre','Kampala Cash Centre'),
+        ('Kamuli','Kamuli'),
+        ('Kamwenge','Kamwenge'),
+        ('Kanungu','Kanungu'),
+        ('Kapchorwa','Kapchorwa'),
+        ('Kasese','Kasese'),
+        ('Kawempe','Kawempe'),
+        ('Kawuku','Kawuku'),
+        ('Kayabwe','Kayabwe'),
+        ('Kayunga','Kayunga'),
+        ('Kiboga','Kiboga'),
+        ('Kikuubo','Kikuubo'),
+        ('Kikuubo B','Kikuubo B'),
+        ('Kireka','Kireka'),
+        ('Kisoro','Kisoro'),
+        ('Kitgum','Kitgum'),
+        ('Koboko','Koboko'),
+        ('Kotido','Kotido'),
+        ('Kumi Service','Kumi Service'),
+        ('Kyenjojo','Kyenjojo'),
+        ('Kyotera','Kyotera'),
+        ('Legal','Legal'),
+        ('Lira','Lira'),
+        ('Lugogo','Lugogo'),
+        ('Lyantonde','Lyantonde'),
+        ('Makerere','Makerere'),
+        ('Mapeera','Mapeera'),
+        ('Mapeera Platinum','Mapeera Platinum'),
+        ('Masaka','Masaka'),
+        ('Masindi','Masindi'),
+        ('Mbale','Mbale'),
+        ('Mbarara','Mbarara'),
+        ('Mbarara Corporate','Mbarara Corporate'),
+        ('Mityana','Mityana'),
+        ('Mobile','Mobile'),
+        ('Moroto','Moroto'),
+        ('Mpigi','Mpigi'),
+        ('Mubende','Mubende'),
+        ('Mukono','Mukono'),
+        ('Najjanankumbi','Najjanankumbi'),
+        ('Nakivubo Road','Nakivubo Road'),
+        ('Namirembe Road','Namirembe Road'),
+        ('Nansana','Nansana'),
+        ('Natete','Natete'),
+        ('Nebbi','Nebbi'),
+        ('Ntinda','Ntinda'),
+        ('Ntungamo','Ntungamo'),
+        ('Operations','Operations'),
+        ('Paidha','Paidha'),
+        ('Pallisa','Pallisa'),
+        ('Retail And Microfinance','Retail And Microfinance'),
+        ('Risk','Risk'),
+        ('Rubaga','Rubaga'),
+        ('Rukungiri','Rukungiri'),
+        ('Security','Security'),
+        ('Sembabule','Sembabule'),
+        ('Soroti','Soroti'),
+        ('Strategy And Research','Strategy And Research'),
+        ('Tororo','Tororo'),
+        ('Wakiso','Wakiso'),
+        ('Wobulenzi','Wobulenzi')
+    ])
     topic = StringField('topic', [validators.Length(min=1, max=20)])
-    issue_type = StringField('issue_type', [validators.Length(min=1, max=20)])
+    issue_type = SelectField('issue_type', choices=[('--Select Issue Type--','--Select Issue Type--'),('Issue','Issue'),('Complaint','Complaint'),('Compliment','Compliment')])
     hrissue = TextAreaField('hrissue', [validators.Length(min=10)])
 
 # Add HR Issue Route  
