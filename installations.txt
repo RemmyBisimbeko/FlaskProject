@@ -56,6 +56,10 @@ register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(50), username VARCHAR(30), password VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 --Enrollments Table
 CREATE TABLE enrollments(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), account VARCHAR(50), branch VARCHAR(30), telephone VARCHAR(30), email VARCHAR(50), officer VARCHAR(50), reason VARCHAR(255), submission_date DATE);
+
+--Reactivation Table
+CREATE TABLE reactivations(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), pf_number VARCHAR(6), branch VARCHAR(30), customer_account VARCHAR(50), product VARCHAR(30),crosssell_type VARCHAR(30), naration VARCHAR(255), submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
 --Cross Sell Table
 CREATE TABLE crosssells(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), pf_number VARCHAR(6), branch VARCHAR(30), customer_account VARCHAR(50), product VARCHAR(30),crosssell_type VARCHAR(30), naration VARCHAR(255), submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 --Applications Table

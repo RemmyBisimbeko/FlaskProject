@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Reactivation
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-3">{{reactivation.product}}</h1> 
+        <small>Created by {{reactivation.name.replace(".", " ").title()}} - {{reactivation.pf_number}} on {{reactivation.submission_date}}</small>  
+        <p></p>
+        <h4>Customer Account - {{reactivation.customer_account}}</h4>
+        <!-- <h5>Cross Sell Type - {{reactivation.crosssell_type}}</h5> -->
+        <h5>Branch - {{reactivation.branch}}</h5>
+
+        <div>
+            {{reactivation.naration | safe }}
+        </div>
+
+    </div>
+</div>
+
+<ul class="list-group">
+    {% for reactivation in reactivations %}
+        <li class="list-group-item">
+            <a href="/reactivation/{{reactivation.id}}">{{ reactivation.name}} - {{ reactivation.account }}</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

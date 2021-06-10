@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Reactivation
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <!-- <h1 class="display-3">About Loan Restructure</h1>
+        <p class="lead">
+            Loan Restructure in an app built by Strategy and Research. 
+            It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
+            at a reduced cost in this covid times.
+        </p>         -->
+        <h1 class="display-3">Reactivations</h1>
+        <p class="lead">
+            The Reactivation solution built by Innovation Committee. 
+            It is an answer to the bank's initiative to enable staff to easily record reactivated accounts. 
+        </p>
+    </div>
+</div>
+
+<a class="btn btn-success" href="/add_reactivation">Add Reactivation</a>
+<p></p>
+
+<ul class="list-group">
+    {% for reactivation in reactivations %}
+        <li class="list-group-item">
+            <a href="/reactivation/{{reactivation.id}}">{{ reactivation.name}} - {{ reactivation.customer_account }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

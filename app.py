@@ -39,6 +39,42 @@ mysql = MySQL(app)
 def home():
     return render_template('home.html')
 
+# Reactivations Route
+@app.route('/reactivations')
+def reactivations():
+    # Create  Cursor
+    cur = mysql.connection.cursor()
+
+    # Get Reactivationss
+    result = cur.execute("SELECT * FROM reactivations")
+
+    # Set Reactivation Variable and set it to all in Dictionary form
+    reactivations = cur.fetchall()
+
+    if result > 0:
+        return render_template('reactivations.html', reactivations=reactivations)
+    else:
+        msg = 'No Reactivations Yet'
+        return render_template('reactivations.html', msg=msg)
+
+    # Close Connection
+    cur.close()
+
+# Single Reactivation Route
+@app.route('/reactivation/<string:id>')
+def reactivation(id):
+    # Create  Cursor
+    cur = mysql.connection.cursor()
+
+    # Get Cross Sell
+    result = cur.execute("SELECT * FROM reactivations WHERE id=%s", [id ])
+
+    # Set Reactivation Variable and set it to all in Dictionary form
+    reactivation = cur.fetchone()
+
+    return render_template('reactivation.html', reactivation=reactivation)
+
+
 # Cross Sells Route
 @app.route('/crosssells')
 def crosssells():
@@ -220,6 +256,29 @@ def logout():
     flash('You are now logged out', 'success')
     return redirect(url_for('login'))
 
+# Reactivation Dashboard Route
+@app.route('/dashboard_reactivations')
+@is_logged_in
+def dashboard_reactivations():
+    # Create  Cursor
+    cur = mysql.connection.cursor()
+
+    # Get Reactivations 
+    result = cur.execute("SELECT * FROM reactivations")
+
+    # Set Reactivation Variable and set it to all in Dictionary form
+    reactivations = cur.fetchall()
+
+    if result > 0:
+        return render_template('dashboard_reactivations.html', reactivations=reactivations)
+    else:
+        msg = 'No Reactivations Yet'
+        return render_template('dashboard_reactivations.html', msg=msg)
+
+    # Close Connection
+    cur.close()
+
+
 # Cross Sell Dashboard Route
 @app.route('/dashboard_crosssells')
 @is_logged_in
@@ -269,6 +328,130 @@ def dashboard_hrissues():
 @is_logged_in
 def dashboard():
     return render_template('dashboard.html')
+
+# Add Reactivation Form Class
+class ReactivationForm(Form):
+    pf_number = StringField('pf_number', [validators.Length(min=1, max=6)])
+    branch = StringField('branch', [validators.Length(min=1, max=50)])
+    customer_account = StringField('customer_account', [validators.Length(min=1, max=20)])
+    product = StringField('product', [validators.Length(min=1, max=20)])
+    # crosssell_type = StringField('crosssell_type', [validators.Length(min=1, max=20)])
+    naration = TextAreaField('naration', [validators.Length(min=10)])
+    # submission_date = StringField('submission_date', [validators.Length(min=1, max=20)])
+
+    # username = StringField('Username', [validators.Length(min=4, max=25)])
+    # username = StringField('Username', [validators.Length(min=4, max=25)])
+    # email = StringField('Email', [validators.Length(min=6, max=50)])
+    # password = PasswordField('Password', [
+    #     validators.DataRequired(),
+    #     validators.EqualTo('confirm', message='Passwords do not match')
+    # ])
+    # confirm = PasswordField('Confirm Password')
+
+# Add Reactivation Route  
+@app.route('/add_reactivation', methods=['GET', 'POST'])
+@is_logged_in
+def add_reactivation():
+    form = ReactivationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        pf_number = form.pf_number.data
+        branch = form.branch.data
+        customer_account = form.customer_account.data
+        product = form.product.data
+        # crosssell_type = form.crosssell_type.data
+        naration = form.naration.data
+        # submission_date = form.submission_date.data
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute 
+        cur.execute("INSERT INTO reactivations(pf_number, branch, customer_account, product, naration, name) VALUES(%s, %s, %s, %s, %s, %s)", (pf_number, branch, customer_account, product, naration, session['username']))
+
+        # Commit to DB
+        mysql.connection.commit()
+
+        # Close Connection
+        cur.close()
+
+        flash('Your Reactivation was made successfully', 'success')
+
+        return redirect(url_for('dashboard_reactivations'))
+
+    return render_template('add_reactivation.html', form=form)
+
+# Edit Reactivation Route  
+@app.route('/edit_reactivation/<string:id>', methods=['GET', 'POST'])
+@is_logged_in
+def edit_reactivation(id):
+
+    # Create Cursor
+    cur = mysql.connection.cursor()
+
+    # Get Cross sell by id
+    result = cur.execute("SELECT * FROM reactivations WHERE id = %s", [id])
+
+    reactivation = cur.fetchone()
+
+    # Get Form
+    form = ReactivationForm(request.form)
+
+    # Populate Cross sell form fields
+    form.pf_number.data = crosssell['pf_number']
+    form.branch.data = crosssell['branch']
+    form.customer_account.data = crosssell['customer_account']
+    form.product.data = crosssell['product']
+    # form.crosssell_type.data = crosssell['crosssell_type']
+    form.naration.data = crosssell['naration']
+
+    if request.method == 'POST' and form.validate():
+        pf_number = request.form['pf_number']
+        branch = request.form['branch']
+        customer_account = request.form['customer_account']
+        product = request.form['product']
+        # crosssell_type = request.form['crosssell_type']
+        naration = request.form['naration']
+        # submission_date = '2020-08-31 23:38:49'
+        # name = session['username']
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute 
+        cur.execute("UPDATE reactivation SET pf_number=%s, branch=%s, customer_account=%s, product=%s, naration=%s WHERE id=%s", (pf_number, branch, customer_account, product, naration, id))
+
+        # Commit to DB
+        mysql.connection.commit()
+
+        # Close Connection
+        cur.close()
+
+        flash('Your reactivation was updated successfully', 'success')
+
+        return redirect(url_for('dashboard_reactivations'))
+
+    return render_template('edit_reactivation.html', form=form)
+
+# Delete Reactivation
+@app.route('/delete_reactivation/<string:id>', methods=['POST'])
+@is_logged_in 
+def delete_reactivation(id):
+    # Create Cursor
+        cur = mysql.connection.cursor()
+
+        # Execute 
+        cur.execute("DELETE FROM reactivations WHERE id=%s", [id])
+
+        # Commit to DB
+        mysql.connection.commit()
+
+        # Close Connection
+        cur.close()
+
+        flash('Your reactivation was deleted successfully', 'success')
+
+        return redirect(url_for('dashboard_reactivations'))
+
 
 # Add Cross Sell Form Class
 class CrosssellForm(Form):

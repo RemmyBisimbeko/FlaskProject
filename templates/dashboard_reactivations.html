@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Reactivation Dashboard
+{% endblock %}
+
+{% block body %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <!-- <h1 class="display-3">About Loan Restructure</h1>
+        <p class="lead">
+            Loan Restructure in an app built by Strategy and Research. 
+            It is an answer to the bank's initiative to help clients and loan officers to easily restructure loans
+            at a reduced cost in this covid times.
+        </p>         -->
+        <h1 class="display-3">Reactivation Dashboard</h1>
+        <small>Welcome, {{session.username.replace(".", " ").title()}}</small>
+        <p class="lead">
+            The Reactivation solution built by Innovation Committee. 
+            It is an answer to the bank's initiative to enable staff to easily record reactivated accounts. 
+        </p>
+    </div>
+</div>
+
+<div>
+    
+    <p></p>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Created By</th>
+            <!-- <th>PF Number</th> -->
+            <!-- <th>Customer Account</th> -->
+            <th>Product</th>
+            <!-- <th>Crosssell Type</th> -->
+            <th>Creation Date</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for reactivation in reactivations %}
+        <tr>
+            <td>{{reactivation.id}}</td>
+            <td>{{reactivation.name}}</td>
+            <!-- <td>{{crosssell.pf_number}}</td> -->
+            <!-- <td>{{crosssell.customer_account}}</td> -->
+            <td>{{reactivation.product}}</td>
+            <!-- <td>{{crosssell.crosssell_type}}</td> -->
+            <td>{{reactivation.submission_date}}</td>
+            <td><a href="edit_reactivation/{{reactivation.id}}" class="btn btn-info" pull-right>Edit</a></td>
+            <td>
+                <form action="{{url_for('delete_reactivation', id=reactivation.id)}}" method='post'>
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" value="DELETE" class="btn btn-danger">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
