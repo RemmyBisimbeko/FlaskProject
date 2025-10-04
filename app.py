@@ -334,7 +334,7 @@ def dashboard():
 class ReactivationForm(Form):
     pf_number = StringField('pf_number', [validators.Length(min=1, max=6)])
     branch = SelectField('branch', choices=[('--Select Branch/Unit--','--Select Branch/Unit--'),
-        ('Adjumani','Adjumani'),
+        ('Adjumani','Adjumani'), 
         ('Apac','Apac'),
         ('Arua','Arua'),
         ('Audit','Audit'),
